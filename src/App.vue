@@ -34,7 +34,7 @@ watch(stack, async (stack) => {
   
   <div class="w-100vw h-100vh flex flex flex-col p-12px box-border">
     <label class="mb-12px shrink-0 box-border" for="project"><input webkitdirectory directory id="project" type="file" class="fixed opacity-0 left-9999" @change="onChange" /> <div class="inline-block bg-gray-200 rounded-4px p-10px cursor-pointer hover:bg-gray-300">{{ projectFiles.length > 0 ? 'Change to the Other Project' : 'Choose Project Root' }}</div> </label>
-    <div class="flex w-full h-[calc(100%-50px)] shrink-1 items-stretch justify-between box-border">
+    <div class="flex w-full h-[calc(100%-90px)] shrink-1 items-stretch justify-between box-border">
       <textarea class="block flex-1 h-full border-1px border-solid border-gray-200 box-border outline-none p-1em font-mono font-semibold box-border mr-12px" v-model="stackString" :resize="false"></textarea>
       <div class="flex-1 border-1px border-solid border-gray-200 h-full ml-12px overflow-y-scroll p-1em font-mono font-semibold box-border">
         <div v-for="(result, idx) in results" :key="idx" class="mb-2em">
@@ -50,6 +50,9 @@ watch(stack, async (stack) => {
             </div>
         </div>
       </div>
+    </div>
+    <div class="fixed bottom-12px text-center font-mono text-12px font-semibold flex items-center justify-center left-0 w-full text-black/50">
+      &copy;&nbsp;Power by&nbsp;<a href="https://wayne-wu.com/" class="text-black underline-transparent hover:text-black/50" target="_blank">Wayne Wu</a>&nbsp;-&nbsp;<a href="https://github.com/WayneWu98/stack-analyzer" class="text-black underline-transparent hover:text-black/50" target="_blank">Github Source</a>
     </div>
   </div>
   
