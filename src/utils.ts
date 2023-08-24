@@ -34,9 +34,10 @@ export const analyze = async (stack: StackTracey, _files: File[]) => {
   // const consumer = await getSourceMapConsumer(sourceMap);
   const results: AnalyzeResult[] = []
   for (const entry of stack.items) {
+    const filePath = entry.file.replace(/\w+:\/\/[^\/]+?\//, '');
     if (!consumers.get(entry.fileShort)) {
       const file = files.find(file => {
-        return file.webkitRelativePath.split('/').slice(1).join('/') === entry.fileShort + '.map'
+        return file.webkitRelativePath.split('/').slice(1).join('/') === filePath + '.map'
       })
       if (!file) continue;
       consumers.set(entry.fileShort, await getSourceMapConsumer(file))
