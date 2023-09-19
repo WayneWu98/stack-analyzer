@@ -1,6 +1,10 @@
 import { type SourceMapConsumer } from 'source-map';
 import StackTracey from 'stacktracey';
 
+const log = (...args: any[]) => {
+  console.log('[STACK ANALYZER]', ...args);
+}
+
 // @ts-ignore
 const SourceMap = window.sourceMap
 
@@ -30,6 +34,7 @@ export interface AnalyzeResult extends StackTracey.Entry {
 
 export const analyze = async (stack: StackTracey, _files: File[]) => {
   const files = _files.filter(file => file.webkitRelativePath.endsWith('.map'))
+  log('START', stack, _files)
   const consumers = new Map<string, SourceMapConsumer>()
   // const consumer = await getSourceMapConsumer(sourceMap);
   const results: AnalyzeResult[] = []
@@ -39,6 +44,7 @@ export const analyze = async (stack: StackTracey, _files: File[]) => {
       const file = files.find(file => {
         return file.webkitRelativePath.split('/').slice(1).join('/') === filePath + '.map'
       })
+      log('GET MAP FILE', entry, file)
       if (!file) continue;
       consumers.set(entry.fileShort, await getSourceMapConsumer(file))
     }
@@ -48,6 +54,7 @@ export const analyze = async (stack: StackTracey, _files: File[]) => {
       column: entry.column!,
     });
     const source = consumer.sourceContentFor(position.source!);
+    log('RESULT', { entry, position, source })
     results.push({
       source: {
         filename: position.source,
@@ -59,5 +66,6 @@ export const analyze = async (stack: StackTracey, _files: File[]) => {
       ...entry
     })
   }
+  log('FINISH', results)
   return results
 }
