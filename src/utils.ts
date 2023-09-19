@@ -34,7 +34,7 @@ export interface AnalyzeResult extends StackTracey.Entry {
 
 export const analyze = async (stack: StackTracey, _files: File[]) => {
   const files = _files.filter(file => file.webkitRelativePath.endsWith('.map'))
-  log('START', stack, _files)
+  log('START', { stack, files })
   const consumers = new Map<string, SourceMapConsumer>()
   // const consumer = await getSourceMapConsumer(sourceMap);
   const results: AnalyzeResult[] = []
@@ -44,7 +44,7 @@ export const analyze = async (stack: StackTracey, _files: File[]) => {
       const file = files.find(file => {
         return file.webkitRelativePath.split('/').slice(1).join('/') === filePath + '.map'
       })
-      log('GET MAP FILE', entry, file)
+      log('GET MAP FILE', { entry, file })
       if (!file) continue;
       consumers.set(entry.fileShort, await getSourceMapConsumer(file))
     }
@@ -66,6 +66,6 @@ export const analyze = async (stack: StackTracey, _files: File[]) => {
       ...entry
     })
   }
-  log('FINISH', results)
+  log('FINISH', { results })
   return results
 }
